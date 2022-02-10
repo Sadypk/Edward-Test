@@ -63,56 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  showAlertDialog(BuildContext context, Employees employees) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Employee Details'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(
-                height: 5,
-              ),
-              const Text('Employee Photo'),
-              Image.memory(employees.employeePic!),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('ID: ${employees.id!.toString()}'),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('First Name: ${employees.firstName!}'),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('Last Name: ${employees.lastName!}'),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('Email Address: ${employees.email!}'),
-              const SizedBox(
-                height: 5,
-              ),
-              Text('Gender: ${employees.email!}'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
               shrinkWrap: true,
               itemCount: employees.length,
               itemBuilder: (_, int index) => InkWell(
-                onTap: () => showAlertDialog(context, employees[index]),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          EmployeeDetails(employees: employees[index])),
+                ),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -145,6 +100,52 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+    );
+  }
+}
+
+class EmployeeDetails extends StatelessWidget {
+  final Employees employees;
+  const EmployeeDetails({Key? key, required this.employees}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${employees.firstName} ${employees.lastName}'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Employee Photo'),
+              Image.memory(employees.employeePic!),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('ID: ${employees.id!.toString()}'),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('First Name: ${employees.firstName!}'),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('Last Name: ${employees.lastName!}'),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('Email Address: ${employees.email!}'),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('Gender: ${employees.email!}'),
+            ]),
+      ),
     );
   }
 }
